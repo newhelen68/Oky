@@ -10,13 +10,28 @@ function FileUpload({ onUploadSuccess }) {
   const [message, setMessage] = useState({ type: '', text: '' })
   const fileInputRef = useRef(null)
 
-  const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+  // Tipos permitidos (MIME) + extensiones
+  const allowedMimeTypes = [
+    'application/pdf',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'text/plain',
+    'text/csv',
+    'application/vnd.ms-excel',
+  ]
+
+  const allowedExtensions = ['.pdf', '.docx', '.txt', '.csv']
+
   const maxSize = 10 * 1024 * 1024 // 10MB
 
   // Validar archivo
   const validateFile = (file) => {
-    if (!allowedTypes.includes(file.type)) {
-      return 'Solo se permiten archivos PDF y DOCX'
+    const ext = file.name.toLowerCase().slice(file.name.lastIndexOf('.'))
+
+    const mimeOk = allowedMimeTypes.includes(file.type)
+    const extOk = allowedExtensions.includes(ext)
+
+    if (!mimeOk && !extOk) {
+      return 'Solo se permiten archivos PDF, DOCX, TXT y CSV'
     }
     if (file.size > maxSize) {
       return 'El archivo excede el tamaño máximo de 10MB'
@@ -40,10 +55,8 @@ function FileUpload({ onUploadSuccess }) {
   const handleDrag = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setDragActive(true)
-    } else if (e.type === 'dragleave') {
-      setDragActive(false)
+    if (e.type === 'dragenter' || e.type === 'dragleave' || e.type === 'dragover') {
+      setDragActive(e.type === 'dragenter' || e.type === 'dragover')
     }
   }
 
@@ -146,7 +159,7 @@ function FileUpload({ onUploadSuccess }) {
         <input
           ref={fileInputRef}
           type="file"
-          accept=".pdf,.docx"
+          accept=".pdf,.docx,.txt,.csv"
           onChange={handleChange}
           className="hidden"
           disabled={uploading}
@@ -166,7 +179,7 @@ function FileUpload({ onUploadSuccess }) {
         </p>
         
         <p className="text-xs text-gray-500 dark:text-gray-500">
-          PDF o DOCX (máx. 10MB)
+          PDF, DOCX, TXT o CSV (máx. 10MB)
         </p>
       </div>
 

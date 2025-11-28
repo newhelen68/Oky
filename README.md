@@ -1,11 +1,11 @@
 # 🚀 Sistema RAG (Retrieval Augmented Generation)
 
-Sistema completo de chat inteligente con capacidad de procesamiento de documentos PDF y DOCX.
+Sistema completo de chat inteligente con capacidad de procesamiento de documentos PDF, DOCX, TXT y CSV.
 
 ## 📋 Características
 
 - ✅ Chat estilo ChatGPT
-- ✅ Subida de documentos PDF y DOCX
+- ✅ Subida de documentos PDF, DOCX, TXT y CSV
 - ✅ Drag & Drop
 - ✅ Procesamiento y vectorización de documentos
 - ✅ Búsqueda semántica
@@ -28,6 +28,7 @@ Sistema completo de chat inteligente con capacidad de procesamiento de documento
 - FAISS (vector store)
 - PDF-Parse
 - Mammoth (DOCX)
+- Soporte para CSV y TXT
 - Multer (file upload)
 
 ## 📦 Instalación
