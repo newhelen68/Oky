@@ -6,22 +6,25 @@
 const logger = require('./logger');
 
 /**
- * Valida que el archivo sea PDF o DOCX
+ * Valida que el archivo sea PDF, DOCX, TXT o CSV
  */
 function validateFileType(file) {
   const allowedMimeTypes = [
     'application/pdf',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'text/plain',           // TXT
+    'text/csv',             // CSV típico
+    'application/vnd.ms-excel' // algunos CSV vienen con este mime
   ];
   
-  const allowedExtensions = ['.pdf', '.docx'];
+  const allowedExtensions = ['.pdf', '.docx', '.txt', '.csv'];
   const fileExtension = file.originalname.toLowerCase().slice(file.originalname.lastIndexOf('.'));
   
   if (!allowedMimeTypes.includes(file.mimetype) || !allowedExtensions.includes(fileExtension)) {
     logger.warn(`Tipo de archivo no permitido: ${file.mimetype} - ${file.originalname}`);
     return {
       valid: false,
-      error: 'Solo se permiten archivos PDF y DOCX'
+      error: 'Solo se permiten archivos PDF, DOCX, TXT y CSV'
     };
   }
   
